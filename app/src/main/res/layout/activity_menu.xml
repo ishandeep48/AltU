@@ -44,6 +44,7 @@
                 android:textAppearance="?attr/textAppearanceTitleMedium"
                 android:text="Date" />
 
+            <!-- Breakfast -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -61,16 +62,16 @@
                         android:textAppearance="?attr/textAppearanceTitleLarge"
                         android:textStyle="bold"
                         android:textColor="?attr/colorPrimary"/>
-                    <TextView
-                        android:id="@+id/tvBreakfast"
+                    <LinearLayout
+                        android:id="@+id/llBreakfast"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:text="Loading..."
-                        android:textAppearance="?attr/textAppearanceBodyMedium"/>
+                        android:orientation="vertical"
+                        android:layout_marginTop="8dp"/>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
+            <!-- Lunch -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -88,16 +89,16 @@
                         android:textAppearance="?attr/textAppearanceTitleLarge"
                         android:textStyle="bold"
                         android:textColor="?attr/colorPrimary"/>
-                    <TextView
-                        android:id="@+id/tvLunch"
+                    <LinearLayout
+                        android:id="@+id/llLunch"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:text="Loading..."
-                        android:textAppearance="?attr/textAppearanceBodyMedium"/>
+                        android:orientation="vertical"
+                        android:layout_marginTop="8dp"/>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
+            <!-- Snacks -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -115,16 +116,16 @@
                         android:textAppearance="?attr/textAppearanceTitleLarge"
                         android:textStyle="bold"
                         android:textColor="?attr/colorPrimary"/>
-                    <TextView
-                        android:id="@+id/tvSnacks"
+                    <LinearLayout
+                        android:id="@+id/llSnacks"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:text="Loading..."
-                        android:textAppearance="?attr/textAppearanceBodyMedium"/>
+                        android:orientation="vertical"
+                        android:layout_marginTop="8dp"/>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
+            <!-- Dinner -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -142,13 +143,12 @@
                         android:textAppearance="?attr/textAppearanceTitleLarge"
                         android:textStyle="bold"
                         android:textColor="?attr/colorPrimary"/>
-                    <TextView
-                        android:id="@+id/tvDinner"
+                    <LinearLayout
+                        android:id="@+id/llDinner"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:text="Loading..."
-                        android:textAppearance="?attr/textAppearanceBodyMedium"/>
+                        android:orientation="vertical"
+                        android:layout_marginTop="8dp"/>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 

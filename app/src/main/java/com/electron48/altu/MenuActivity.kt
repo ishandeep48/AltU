@@ -64,10 +64,8 @@ class MenuActivity : AppCompatActivity() {
             return
         }
 
-        findViewById<TextView>(R.id.tvBreakfast).text = "Loading..."
-        findViewById<TextView>(R.id.tvLunch).text = "Loading..."
-        findViewById<TextView>(R.id.tvSnacks).text = "Loading..."
-        findViewById<TextView>(R.id.tvDinner).text = "Loading..."
+        // Show loading state if appropriate, or just wait for response
+        // findViewById<TextView>(R.id.tvBreakfast).text = "Loading..." // Views replaced by containers
 
         Thread {
             try {
@@ -127,11 +125,11 @@ class MenuActivity : AppCompatActivity() {
 
             val mealList = data.getJSONArray("oMealList")
 
-            // Reset texts
-             findViewById<TextView>(R.id.tvBreakfast).text = "Not Available"
-             findViewById<TextView>(R.id.tvLunch).text = "Not Available"
-             findViewById<TextView>(R.id.tvSnacks).text = "Not Available"
-             findViewById<TextView>(R.id.tvDinner).text = "Not Available"
+            // Clear existing views
+            findViewById<android.widget.LinearLayout>(R.id.llBreakfast).removeAllViews()
+            findViewById<android.widget.LinearLayout>(R.id.llLunch).removeAllViews()
+            findViewById<android.widget.LinearLayout>(R.id.llSnacks).removeAllViews()
+            findViewById<android.widget.LinearLayout>(R.id.llDinner).removeAllViews()
 
             for (i in 0 until mealList.length()) {
                 val meal = mealList.getJSONObject(i)
@@ -139,19 +137,88 @@ class MenuActivity : AppCompatActivity() {
                 val mealItems = meal.getString("msNme")
 
                 if (mealName.contains("Breakfast", ignoreCase = true)) {
-                    findViewById<TextView>(R.id.tvBreakfast).text = mealItems
+                    populateMealContainer(findViewById(R.id.llBreakfast), mealItems)
                 } else if (mealName.contains("Lunch", ignoreCase = true)) {
-                     findViewById<TextView>(R.id.tvLunch).text = mealItems
+                     populateMealContainer(findViewById(R.id.llLunch), mealItems)
                 } else if (mealName.contains("Snack", ignoreCase = true)) {
-                     findViewById<TextView>(R.id.tvSnacks).text = mealItems
+                     populateMealContainer(findViewById(R.id.llSnacks), mealItems)
                 } else if (mealName.contains("Dinner", ignoreCase = true)) {
-                     findViewById<TextView>(R.id.tvDinner).text = mealItems
+                     populateMealContainer(findViewById(R.id.llDinner), mealItems)
                 }
             }
 
         } catch (e: Exception) {
             e.printStackTrace()
-             findViewById<TextView>(R.id.tvBreakfast).text = "Error parsing data"
+             Toast.makeText(this, "Error parsing data: ${e.message}", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun populateMealContainer(container: android.widget.LinearLayout, mealItemsString: String) {
+        val lines = mealItemsString.split("\n")
+        val regex = Regex("(.*)\\((.*[kK]cal)\\)") // Captures Name(Cal)
+
+        for (line in lines) {
+            if (line.isBlank()) continue
+            
+            val trimmedLine = line.trim()
+            var name = trimmedLine
+            var calories = ""
+
+            val matchResult = regex.find(trimmedLine)
+            if (matchResult != null) {
+                name = matchResult.groupValues[1].trim().removeSuffix("-").trim()
+                calories = matchResult.groupValues[2].trim()
+            } else {
+                // Try simpler split if regex fails but has parens?
+                // For now, if no match, just show full line as name
+            }
+
+            // Create Row Layout
+            val rowLayout = android.widget.LinearLayout(this).apply {
+                layoutParams = android.widget.LinearLayout.LayoutParams(
+                    android.widget.LinearLayout.LayoutParams.MATCH_PARENT,
+                    android.widget.LinearLayout.LayoutParams.WRAP_CONTENT
+                ).apply {
+                    setMargins(0, 8, 0, 8)
+                }
+                orientation = android.widget.LinearLayout.HORIZONTAL
+            }
+
+            val tvName = TextView(this).apply {
+                layoutParams = android.widget.LinearLayout.LayoutParams(
+                    0,
+                    android.widget.LinearLayout.LayoutParams.WRAP_CONTENT,
+                    1f
+                )
+                text = name
+                setTextAppearance(com.google.android.material.R.style.TextAppearance_Material3_BodyMedium)
+            }
+
+            val tvCalories = TextView(this).apply {
+                layoutParams = android.widget.LinearLayout.LayoutParams(
+                    android.widget.LinearLayout.LayoutParams.WRAP_CONTENT,
+                    android.widget.LinearLayout.LayoutParams.WRAP_CONTENT
+                )
+                text = calories
+                setTextAppearance(com.google.android.material.R.style.TextAppearance_Material3_BodySmall)
+                setTextColor(resources.getColor(android.R.color.darker_gray, theme))
+                setPadding(16, 0, 0, 0)
+            }
+
+            rowLayout.addView(tvName)
+            rowLayout.addView(tvCalories)
+            container.addView(rowLayout)
+            
+            // Add separator
+            val separator = android.view.View(this).apply {
+                 layoutParams = android.widget.LinearLayout.LayoutParams(
+                    android.widget.LinearLayout.LayoutParams.MATCH_PARENT,
+                    1
+                )
+                setBackgroundColor(resources.getColor(android.R.color.darker_gray, theme))
+                alpha = 0.2f
+            }
+            container.addView(separator)
         }
     }
 }
