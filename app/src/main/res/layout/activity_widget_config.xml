@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:gravity="center_horizontal">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Widget Settings"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textStyle="bold"
+        android:layout_marginBottom="24dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Theme Style"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_marginBottom="8dp"/>
+
+    <RadioGroup
+        android:id="@+id/rgTheme"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:checkedButton="@+id/rbTranslucent"
+        android:layout_marginBottom="16dp">
+
+        <RadioButton
+            android:id="@+id/rbMaterialYou"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Material You (Wallpaper Colors)"/>
+
+        <RadioButton
+            android:id="@+id/rbTranslucent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Translucent (Custom)"/>
+    </RadioGroup>
+
+    <LinearLayout
+        android:id="@+id/llTransparency"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginBottom="24dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Glass Tint"
+            android:layout_marginBottom="8dp"/>
+
+        <RadioGroup
+            android:id="@+id/rgTint"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:checkedButton="@+id/rbTintDark"
+            android:layout_marginBottom="16dp">
+
+            <RadioButton
+                android:id="@+id/rbTintDark"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="Dark (Smoked)"/>
+
+            <RadioButton
+                android:id="@+id/rbTintLight"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="Light (Frosted)"/>
+        </RadioGroup>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Transparency Level"
+            android:layout_marginBottom="8dp"/>
+
+        <SeekBar
+            android:id="@+id/sbTransparency"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:max="100"
+            android:progress="50"/>
+            
+        <TextView
+            android:id="@+id/tvTransparencyValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:text="50%"/>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btnAddWidget"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Add Widget"/>
+
+</LinearLayout>

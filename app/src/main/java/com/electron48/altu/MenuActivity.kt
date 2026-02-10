@@ -5,6 +5,7 @@ import android.util.Base64
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.WindowCompat
 import com.google.android.material.appbar.MaterialToolbar
 import org.json.JSONObject
 import java.nio.charset.StandardCharsets
@@ -18,6 +19,13 @@ class MenuActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        
+        // Apply Dynamic Colors
+        if (com.electron48.altu.PrefsManager(this).isDynamicTheme()) {
+            com.google.android.material.color.DynamicColors.applyToActivityIfAvailable(this)
+        }
+
+        WindowCompat.setDecorFitsSystemWindows(window, false)
         setContentView(R.layout.activity_menu)
 
         prefsManager = PrefsManager(this)
@@ -99,6 +107,14 @@ class MenuActivity : AppCompatActivity() {
                     runOnUiThread {
                         parseAndDisplayMenu(responseBody)
                         Toast.makeText(this@MenuActivity, "Menu Refreshed", Toast.LENGTH_SHORT).show()
+                        
+                        // Update Widget
+                        val intent = android.content.Intent(this@MenuActivity, MenuWidgetProvider::class.java)
+                        intent.action = android.appwidget.AppWidgetManager.ACTION_APPWIDGET_UPDATE
+                        val ids = android.appwidget.AppWidgetManager.getInstance(application)
+                            .getAppWidgetIds(android.content.ComponentName(application, MenuWidgetProvider::class.java))
+                        intent.putExtra(android.appwidget.AppWidgetManager.EXTRA_APPWIDGET_IDS, ids)
+                        sendBroadcast(intent)
                     }
                 } else {
                     runOnUiThread {

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/widgetRoot"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="12dp"
+    android:background="@drawable/widget_background">
+
+    <ImageButton
+        android:id="@+id/btnRefresh"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:src="@android:drawable/ic_menu_rotate"
+        android:background="?android:attr/selectableItemBackgroundBorderless"
+        android:tint="@color/widget_text_material"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:contentDescription="Refresh Menu"/>
+
+    <TextView
+        android:id="@+id/tvWidgetTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Overview"
+        android:textStyle="bold"
+        android:textColor="@color/widget_text_material"
+        android:textSize="14sp"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true" 
+        android:layout_marginTop="4dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_below="@id/tvWidgetTitle"
+        android:layout_centerInParent="true"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/tvMealName"
+            android:text="Lunch"
+            android:textColor="@color/widget_text_material"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:layout_marginBottom="4dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <!-- Scrollable content if text is long, though widgets have limitations with scrolling usually requires ListView/GridView for true scrolling. 
+             For simplicity and since it's a widget, we'll just ellipsize or use maxLines. 
+             Ideally widgets use ListView for collections, but for a single block of text, TextView is fine. -->
+        <TextView
+            android:id="@+id/tvMealItems"
+            android:text="Loading..."
+            android:textColor="@color/widget_text_material"
+            android:textSize="14sp"
+            android:lineSpacingExtra="4dp"
+            android:maxLines="12"
+            android:ellipsize="none"
+            android:requiresFadingEdge="vertical"
+            android:fadingEdgeLength="80dp"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/btnPrev"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@android:drawable/ic_media_previous"
+        android:background="?android:attr/selectableItemBackgroundBorderless"
+        android:tint="@color/widget_text_material"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        android:contentDescription="Previous Meal"/>
+
+    <ImageButton
+        android:id="@+id/btnNext"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@android:drawable/ic_media_next"
+        android:background="?android:attr/selectableItemBackgroundBorderless"
+        android:tint="@color/widget_text_material"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:contentDescription="Next Meal"/>
+
+</RelativeLayout>

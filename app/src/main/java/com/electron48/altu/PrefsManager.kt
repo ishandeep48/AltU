@@ -10,8 +10,10 @@ class PrefsManager(context: Context) {
         const val KEY_COOKIE = "auth_cookie"
         const val KEY_STU_ID = "stu_id"
         const val KEY_IN_ID = "in_id"
+        const val KEY_USER_NAME = "user_name"
         const val KEY_CACHED_MENU = "cached_menu"
         const val KEY_MENU_DATE = "menu_date"
+        const val KEY_DYNAMIC_THEME = "dynamic_theme"
     }
 
     fun saveAuthData(cookie: String, stuId: String, inId: String) {
@@ -21,6 +23,22 @@ class PrefsManager(context: Context) {
             putString(KEY_IN_ID, inId)
             apply()
         }
+    }
+    
+    fun setDynamicTheme(enabled: Boolean) {
+        prefs.edit().putBoolean(KEY_DYNAMIC_THEME, enabled).apply()
+    }
+    
+    fun isDynamicTheme(): Boolean {
+        return prefs.getBoolean(KEY_DYNAMIC_THEME, false)
+    }
+    
+    fun saveUserName(name: String) {
+        prefs.edit().putString(KEY_USER_NAME, name).apply()
+    }
+    
+    fun getUserName(): String? {
+        return prefs.getString(KEY_USER_NAME, null)
     }
 
     fun getAuthData(): Triple<String?, String?, String?> {

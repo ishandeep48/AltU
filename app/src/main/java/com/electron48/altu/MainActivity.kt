@@ -11,12 +11,33 @@ import java.nio.charset.StandardCharsets
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        
+        // Apply Dynamic Colors
+        if (PrefsManager(this).isDynamicTheme()) {
+            com.google.android.material.color.DynamicColors.applyToActivityIfAvailable(this)
+        }
+        
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
+        }
+
+        // Check for existing session
+        // Check for existing session
+        val prefsManager = PrefsManager(this)
+        val (cookie, stuId, inId) = prefsManager.getAuthData()
+        if (cookie != null && stuId != null && inId != null) {
+            val intent = android.content.Intent(this, HomeActivity::class.java)
+            val savedName = prefsManager.getUserName()
+            if (savedName != null) {
+                intent.putExtra("USER_NAME", savedName)
+            }
+            startActivity(intent)
+            finish()
+            return
         }
 
         findViewById<android.widget.Button>(R.id.btnLogin).setOnClickListener {
@@ -110,6 +131,9 @@ class MainActivity : AppCompatActivity() {
                                } else {
                                    loginDetails.getString("Name")
                                }
+                               
+                               // Save User Name
+                               PrefsManager(this@MainActivity).saveUserName(userName)
 
                                android.widget.Toast.makeText(this@MainActivity, "Login Successful", android.widget.Toast.LENGTH_SHORT).show()
                                
