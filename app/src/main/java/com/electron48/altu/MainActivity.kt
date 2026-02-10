@@ -66,6 +66,46 @@ class MainActivity : AppCompatActivity() {
                                
                                val userName = if (studentArray.length() > 0) {
                                    val student = studentArray.getJSONObject(0)
+                                   
+                                   // Save Auth Data
+                                   val stuId = student.optString("StuID") // Use optString to avoid crash
+                                   val inId = loginDetails.optString("InId").ifEmpty { student.optString("InId") } // Try root first
+                                   
+                                   // Extract Set-Cookie header - improved logic
+                                   // Some servers send multiple Set-Cookie headers. 
+                                   // HttpURLConnection might return the last one or we need headerFields for all.
+                                   // For now, let's look for connect.sid specifically.
+                                   
+                                   var connectSid: String? = null
+                                   val headers = conn.headerFields
+                                   val cookies = headers["Set-Cookie"]
+                                   
+                                   if (cookies != null) {
+                                       for (cookie in cookies) {
+                                           if (cookie.contains("connect.sid")) {
+                                               // Extract just the value: connect.sid=...; Path=/; HttpOnly...
+                                               // We want the whole string up to the first semicolon usually, 
+                                               // but for passing back as 'Cookie' header, sending the raw 'connect.sid=XYZ' is best.
+                                               val parts = cookie.split(";")
+                                               for (part in parts) {
+                                                   if (part.trim().startsWith("connect.sid")) {
+                                                       connectSid = part.trim().substringAfter("connect.sid=")
+                                                       break
+                                                   }
+                                               }
+                                           }
+                                           if (connectSid != null) break
+                                       }
+                                   }
+
+                                   if (connectSid != null) {
+                                       val prefsManager = PrefsManager(this@MainActivity)
+                                       prefsManager.saveAuthData(connectSid, stuId, inId)
+                                       println("Saved Session: $connectSid, Stu: $stuId, In: $inId") 
+                                   } else {
+                                       println("WARNING: connect.sid not found in cookies: $cookies")
+                                   }
+
                                    "${student.getString("FNa")} ${student.getString("LNa")}".trim()
                                } else {
                                    loginDetails.getString("Name")
